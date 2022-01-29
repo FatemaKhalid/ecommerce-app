@@ -1,9 +1,10 @@
-import Layout from '../../components/Layout';
+import Layout from "../../components/Layout";
+import { CartPage } from "./Cart";
 
-const CartPage = () => (
+const Cart = () => (
   <Layout>
-    <h1>Your Cart</h1>
+    <CartPage />
   </Layout>
 );
 
-export default CartPage;
+export default Cart;

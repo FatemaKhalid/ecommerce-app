@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { PaginationComponent } from "../../components/Pagination/Pagination";
 import { ProductComponent } from "../../components/Product/Product";
-import { Product, ProductsResponse } from "../../types";
+import { ProductsResponse } from "../../types";
 import { fetchProducts } from "./services/service";
 
 export function ProductsPage() {
