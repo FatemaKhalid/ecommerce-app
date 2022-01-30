@@ -1,3 +1,5 @@
+import { atom, selector, selectorFamily } from "recoil";
+
 export type Product = {
   name: string;
   gtin: string;
@@ -27,9 +29,34 @@ export type ProductsResponse = {
  */
 export type ProductResponse = Product;
 
-type CartItem={
-[key:string]:Product
-}
-export type GlobalState = {
-  cartItems: CartItem[]
-} 
+/**
+ * The Global State for user cart
+ */
+
+export type CartItem = Product & { quantity: number };
+// Global state is the items users are willing to buy which is a map with
+// product gtin as key and pruduct data and quantity as value
+export const CartItems = atom({
+  key: "cartItemsState",
+  default: new Map<string, number>(),
+});
+
+export const ItemQuantitySelector = selectorFamily<number, string>({
+  key: "itemQuantitySelector",
+  get:
+    (gtin: string) =>
+    ({ get }) => {
+      const cart = get(CartItems);
+      const g = cart?.get(gtin);
+      g === undefined && get(CartItems).set(gtin, 1);
+      return cart?.get(gtin)!;
+    },
+  set:
+    (gtin: string) =>
+    ({ set }, newValue) =>
+      set(CartItems, (prevState) => {
+        const newMap = new Map(prevState);
+        newMap.set(gtin, Number(newValue));
+        return newMap;
+      }),
+});

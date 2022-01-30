@@ -1,19 +1,55 @@
+import React, { useEffect, useMemo } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { CartItems, ItemQuantitySelector } from "../../types";
+import { addItemToCart, removeItemFromCart, setItemInCart } from "./services";
+
 type AddRemoveItemProps = {
-  handleAddClick: () => void;
-  handleRemoveClick: () => void;
+  gtin: string;
+  direction?: "col" | "row";
 };
 export function AddRemoveItemComponent({
-  handleAddClick,
-  handleRemoveClick,
+  gtin,
+  direction,
 }: AddRemoveItemProps) {
+  const dir = direction ?? "col";
+  const cItems = useRecoilValue(CartItems);
+  const setItems = useSetRecoilState(CartItems);
+  const [quantity, quantityOnChange] = useRecoilState(
+    ItemQuantitySelector(gtin)
+  );
+
+  function handleAddClick() {
+    // setItems((items) => addItemToCart(gtin, items, quantityOnChange));
+    // addItemToCart(gtin, cItems, quantityOnChange);
+    quantityOnChange(quantity + 1);
+    console.log(cItems);
+    console.log(quantity);
+  }
+  function handleRemoveClick() {
+    setItems((items) => removeItemFromCart(gtin, items));
+  }
+  function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const val = event.target.value;
+    // setItems(setItemInCart(gtin, cartItems, Number(val)));
+    quantityOnChange(+val);
+    console.log({ quantity: cItems.get(gtin) });
+  }
   return (
-    <div className="ml-auto w-10 h-10">
+    <div className={`ml-auto flex ${`flex-${dir}`}`}>
       <button
         onClick={handleAddClick}
         className="rounded-t-lg bg-gray-900 text-white hover:bg-white hover:text-gray-900 hover:shadow-xl focus:outline-none flex transition duration-300"
       >
         <AddIcon />
       </button>
+      {dir === "row" ? (
+        <input
+          className="mx-2 border text-center w-8"
+          type="number"
+          value={cItems.get(gtin)}
+          onChange={handleOnChange}
+        />
+      ) : null}
       <button
         onClick={handleRemoveClick}
         className="rounded-b-lg bg-gray-900 text-white hover:bg-white hover:text-gray-900 hover:shadow-xl focus:outline-none flex transition duration-300"
