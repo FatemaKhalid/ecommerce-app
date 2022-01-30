@@ -1,38 +1,32 @@
 import React, { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { CartItems, ItemQuantitySelector } from "../../types";
-import { addItemToCart, removeItemFromCart, setItemInCart } from "./services";
 
 type AddRemoveItemProps = {
   gtin: string;
   direction?: "col" | "row";
 };
+
 export function AddRemoveItemComponent({
   gtin,
   direction,
 }: AddRemoveItemProps) {
   const dir = direction ?? "col";
   const cItems = useRecoilValue(CartItems);
-  const setItems = useSetRecoilState(CartItems);
+
   const [quantity, quantityOnChange] = useRecoilState(
     ItemQuantitySelector(gtin)
   );
 
   function handleAddClick() {
-    // setItems((items) => addItemToCart(gtin, items, quantityOnChange));
-    // addItemToCart(gtin, cItems, quantityOnChange);
     quantityOnChange(quantity + 1);
-    console.log(cItems);
-    console.log(quantity);
   }
   function handleRemoveClick() {
-    setItems((items) => removeItemFromCart(gtin, items));
+    quantityOnChange(quantity - 1);
   }
   function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     const val = event.target.value;
-    // setItems(setItemInCart(gtin, cartItems, Number(val)));
     quantityOnChange(+val);
-    console.log({ quantity: cItems.get(gtin) });
   }
   return (
     <div className={`ml-auto flex ${`flex-${dir}`}`}>

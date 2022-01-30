@@ -56,7 +56,10 @@ export const ItemQuantitySelector = selectorFamily<number, string>({
     ({ set }, newValue) =>
       set(CartItems, (prevState) => {
         const newMap = new Map(prevState);
-        newMap.set(gtin, Number(newValue));
+        const num = Number(newValue);
+        if (num === 0) newMap.delete(gtin);
+        else newMap.set(gtin, num);
+        console.log(newMap);
         return newMap;
       }),
 });
