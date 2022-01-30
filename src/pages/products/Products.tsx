@@ -1,21 +1,26 @@
 import { useEffect, useMemo, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { PaginationComponent } from "../../components/Pagination/Pagination";
 import { ProductComponent } from "../../components/Product/Product";
-import { CartItems, ProductsResponse } from "../../types";
+import { CartItems, DisplayedProducts, ProductsResponse } from "../../types";
 import { fetchProducts } from "./services/service";
 
 export function ProductsPage() {
   const [productResponse, setProductResponse] = useState<ProductsResponse>();
+  const [pageNum, setPageNum] = useRecoilState(DisplayedProducts);
+
   const productsList = useMemo(
     () => productResponse?.results,
     [productResponse]
   );
-
+  const pageCount = useMemo(
+    () => (productResponse?.count ?? 1) / 20,
+    [productResponse]
+  );
   const cItems = useRecoilValue(CartItems);
 
   useEffect(() => {
-    fetchProducts()
+    fetchProducts(pageNum)
       .then((response) => {
         // The response is a Response instance.
         // You parse the data into a useable format using `.json()`
@@ -24,8 +29,9 @@ export function ProductsPage() {
       .then((data: ProductsResponse) => {
         // `data` is the parsed version of the JSON returned from the above endpoint.
         setProductResponse(data);
+        setPageNum(data.page);
       });
-  }, []);
+  }, [pageNum]);
   return (
     <>
       <div className="w-full pl-5 lg:pl-2 mb-4 mt-4">
@@ -45,7 +51,7 @@ export function ProductsPage() {
         </div>
       </div>
       <PaginationComponent
-        totalPages={productResponse?.count ?? 0}
+        totalPages={pageCount}
         currentPage={productResponse?.page ?? 0}
       />
     </>

@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+import { useSetRecoilState } from "recoil";
+import { DisplayedProducts } from "../../types";
 
 type PaginationProps = {
   totalPages: number;
@@ -10,48 +12,56 @@ export function PaginationComponent({
   totalPages,
   currentPage,
 }: PaginationProps) {
+  const setPageNum = useSetRecoilState(DisplayedProducts);
   const pages = useMemo(
-    () =>
-      Array.from(
-        { length: totalPages > MAX_PAGES_NUM ? MAX_PAGES_NUM : totalPages },
-        (_, i) => i + currentPage
-      ),
+    () => Array.from({ length: totalPages }, (_, i) => i + 1),
     [totalPages]
   );
   const currPageClassName =
     "hidden md:flex w-10 h-10 mx-1 justify-center items-center rounded-full border border-black bg-black text-white pointer-events-none";
   const pageClassName =
     "hidden md:flex w-10 h-10 mx-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300";
+
+  function moveToPage(pageNum: number) {
+    if (pageNum < 1 || pageNum > totalPages) return;
+    setPageNum(pageNum);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <div className="container mx-auto px-4">
       <nav
         className="flex flex-row flex-nowrap justify-between md:justify-center items-center"
         aria-label="Pagination"
       >
-        <a
+        <button
           className="flex w-10 h-10 mr-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
-          href="#"
           title="Previous Page"
+          onClick={() => moveToPage(currentPage - 1)}
         >
           <span className="sr-only">Previous Page</span>
           <PrevPage />
-        </a>
+        </button>
         {pages.map((page) => (
-          <a
+          <button
             key={page}
             className={page == currentPage ? currPageClassName : pageClassName}
+            onClick={() => moveToPage(page)}
           >
             {page}
-          </a>
+          </button>
         ))}
-        <a
+        <button
           className="flex w-10 h-10 ml-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
-          href="#"
           title="Next Page"
+          onClick={() => moveToPage(currentPage + 1)}
         >
           <span className="sr-only">Next Page</span>
           <NextPage />
-        </a>
+        </button>
       </nav>
     </div>
   );

@@ -41,6 +41,11 @@ export const CartItems = atom({
   default: new Map<string, CartItem>(),
 });
 
+export const DisplayedProducts = atom({
+  key: "displayedProductsState",
+  default: 1,
+});
+
 export const ItemQuantitySelector = selectorFamily<CartItem, string>({
   key: "itemQuantitySelector",
   get:
