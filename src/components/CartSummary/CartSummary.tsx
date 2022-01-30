@@ -4,19 +4,21 @@ import { CartItems } from "../../types";
 
 export function CartSummary() {
   const cItems = useRecoilValue(CartItems);
-  const entries = useMemo(() => Array.from(cItems.entries()), [cItems]);
+  const items = useMemo(() => Array.from(cItems.entries()), [cItems]);
   const totalPrice = useMemo(
     () =>
-      entries.reduce(
-        (acc, entry) =>
-          (acc += entry[1].quantity * entry[1].recommendedRetailPrice),
-        0
-      ),
-    [entries]
+      items
+        .reduce(
+          (acc, entry) =>
+            (acc += entry[1].quantity * entry[1].recommendedRetailPrice),
+          0
+        )
+        .toFixed(2),
+    [items]
   );
   const totalCount = useMemo(
-    () => entries.reduce((acc, entry) => (acc += entry[1].quantity), 0),
-    [entries]
+    () => items.reduce((acc, entry) => (acc += entry[1].quantity), 0),
+    [items]
   );
   return (
     <div id="summary" className="w-1/4 px-8 py-10">

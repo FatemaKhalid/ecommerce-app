@@ -1,18 +1,6 @@
 import { useRecoilValue } from "recoil";
 import { CartItems, Product } from "../../types";
-import { AddRemoveItemComponent } from "../AddRemoveItem/AddRemoveItem";
 import { CartItem } from "./CartItem";
-
-// const INIT_PROD: Product = {
-//   name: "Parodontax Duplo Herbal Fresh 75ml",
-//   gtin: "5054563079435",
-//   recommendedRetailPrice: 29.99,
-//   recommendedRetailPriceCurrency: "EUR",
-//   imageUrl:
-//     "https://images.qogita.com/files/images/variants/aB9r5isuPDUTTD3nLNsXvQ.jpg",
-//   brandName: "Parodontax",
-//   categoryName: "Toothpaste",
-// };
 
 export function CartItemsContainer() {
   const cItems = useRecoilValue(CartItems);

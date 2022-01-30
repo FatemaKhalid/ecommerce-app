@@ -17,10 +17,6 @@ export function ProductComponent({ product, countInCart }: ProductProps) {
     categoryName,
   } = product;
 
-  function handleAddClick() {}
-
-  function handleRemoveClick() {}
-
   return (
     <div className="w-full md:w-1/2 lg:w-1/4 pl-5 pr-5 mb-5 lg:pl-2 lg:pr-2">
       <div className="bg-white rounded-lg m-h-64 p-2 hover:shadow-xl transition duration-300">
@@ -49,10 +45,7 @@ export function ProductComponent({ product, countInCart }: ProductProps) {
                 {countInCart}
               </div>
             ) : null}
-            <AddRemoveItemComponent
-              handleAddClick={handleAddClick}
-              handleRemoveClick={handleRemoveClick}
-            />
+            <AddRemoveItemComponent product={product} />
           </div>
         </div>
       </div>

@@ -38,17 +38,7 @@ export type CartItem = Product & { quantity: number };
 // product gtin as key and pruduct data and quantity as value
 export const CartItems = atom({
   key: "cartItemsState",
-  default: new Map<string, CartItem>().set("5054563079435", {
-    name: "Parodontax Duplo Herbal Fresh 75ml",
-    gtin: "5054563079435",
-    recommendedRetailPrice: 29.99,
-    recommendedRetailPriceCurrency: "EUR",
-    imageUrl:
-      "https://images.qogita.com/files/images/variants/aB9r5isuPDUTTD3nLNsXvQ.jpg",
-    brandName: "Parodontax",
-    categoryName: "Toothpaste",
-    quantity: 3,
-  }),
+  default: new Map<string, CartItem>(),
 });
 
 export const ItemQuantitySelector = selectorFamily<CartItem, string>({
@@ -58,7 +48,6 @@ export const ItemQuantitySelector = selectorFamily<CartItem, string>({
     ({ get }) => {
       const cart = get(CartItems);
       const item = cart?.get(gtin);
-      // item === undefined && get(CartItems).set(product.gtin, { ...product,quantity: 1 });
       return item!;
     },
   set:
@@ -69,7 +58,6 @@ export const ItemQuantitySelector = selectorFamily<CartItem, string>({
         const item = <CartItem>newValue;
         if (item.quantity === 0) newMap.delete(gtin);
         else newMap.set(gtin, item);
-        console.log(newMap);
         return newMap;
       }),
 });

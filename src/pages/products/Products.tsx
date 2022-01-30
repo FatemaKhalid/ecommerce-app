@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { PaginationComponent } from "../../components/Pagination/Pagination";
 import { ProductComponent } from "../../components/Product/Product";
-import { ProductsResponse } from "../../types";
+import { CartItems, ProductsResponse } from "../../types";
 import { fetchProducts } from "./services/service";
 
 export function ProductsPage() {
@@ -10,6 +11,8 @@ export function ProductsPage() {
     () => productResponse?.results,
     [productResponse]
   );
+
+  const cItems = useRecoilValue(CartItems);
 
   useEffect(() => {
     fetchProducts()
@@ -20,7 +23,6 @@ export function ProductsPage() {
       })
       .then((data: ProductsResponse) => {
         // `data` is the parsed version of the JSON returned from the above endpoint.
-        console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
         setProductResponse(data);
       });
   }, []);
@@ -34,7 +36,11 @@ export function ProductsPage() {
       <div className="flex items-center">
         <div className="container ml-auto mr-auto flex flex-wrap items-start">
           {productsList?.map((prod) => (
-            <ProductComponent key={prod.gtin} product={prod} countInCart={3} />
+            <ProductComponent
+              key={prod.gtin}
+              product={prod}
+              countInCart={cItems.get(prod.gtin)?.quantity}
+            />
           ))}
         </div>
       </div>

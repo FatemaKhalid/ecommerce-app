@@ -1,4 +1,3 @@
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import { CartItem as ItemType, CartItems, Product } from "../../types";
 import { AddRemoveItemComponent } from "../AddRemoveItem/AddRemoveItem";
 
@@ -27,7 +26,11 @@ export function CartItem({ product }: CartItemProps) {
           </a>
         </div>
       </div>
-      <AddRemoveItemComponent product={product} direction="row" />
+      <AddRemoveItemComponent
+        key={product.name}
+        product={product}
+        direction="row"
+      />
       <span className="text-center w-1/5 font-semibold text-sm">
         {product.recommendedRetailPrice}
         {product.recommendedRetailPriceCurrency}

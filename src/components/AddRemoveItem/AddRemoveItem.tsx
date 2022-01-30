@@ -13,13 +13,14 @@ export function AddRemoveItemComponent({
 }: AddRemoveItemProps) {
   const dir = direction ?? "col";
   const cItems = useRecoilValue(CartItems);
-
+  const setcItems = useSetRecoilState(CartItems);
   const [item, quantityOnChange] = useRecoilState(
     ItemQuantitySelector(product?.gtin)
   );
 
-  function handleAddClick() {
-    quantityOnChange({ ...product, quantity: item.quantity + 1 });
+  function handleAddClick(gtin: string) {
+    if (item) quantityOnChange({ ...product, quantity: item.quantity + 1 });
+    else setcItems((s) => new Map(s).set(gtin, { ...product, quantity: 1 }));
   }
   function handleRemoveClick() {
     quantityOnChange({ ...product, quantity: item.quantity - 1 });
@@ -31,7 +32,7 @@ export function AddRemoveItemComponent({
   return (
     <div className={`ml-auto flex ${`flex-${dir}`}`}>
       <button
-        onClick={handleAddClick}
+        onClick={() => handleAddClick(product.gtin)}
         className="rounded-t-lg bg-gray-900 text-white hover:bg-white hover:text-gray-900 hover:shadow-xl focus:outline-none flex transition duration-300"
       >
         <AddIcon />
