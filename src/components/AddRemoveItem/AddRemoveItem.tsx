@@ -1,32 +1,32 @@
 import React, { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { CartItems, ItemQuantitySelector } from "../../types";
+import { CartItems, ItemQuantitySelector, Product } from "../../types";
 
 type AddRemoveItemProps = {
-  gtin: string;
+  product: Product;
   direction?: "col" | "row";
 };
 
 export function AddRemoveItemComponent({
-  gtin,
+  product,
   direction,
 }: AddRemoveItemProps) {
   const dir = direction ?? "col";
   const cItems = useRecoilValue(CartItems);
 
-  const [quantity, quantityOnChange] = useRecoilState(
-    ItemQuantitySelector(gtin)
+  const [item, quantityOnChange] = useRecoilState(
+    ItemQuantitySelector(product?.gtin)
   );
 
   function handleAddClick() {
-    quantityOnChange(quantity + 1);
+    quantityOnChange({ ...product, quantity: item.quantity + 1 });
   }
   function handleRemoveClick() {
-    quantityOnChange(quantity - 1);
+    quantityOnChange({ ...product, quantity: item.quantity - 1 });
   }
   function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     const val = event.target.value;
-    quantityOnChange(+val);
+    quantityOnChange({ ...product, quantity: +val });
   }
   return (
     <div className={`ml-auto flex ${`flex-${dir}`}`}>
@@ -40,7 +40,7 @@ export function AddRemoveItemComponent({
         <input
           className="mx-2 border text-center w-8"
           type="number"
-          value={cItems.get(gtin)}
+          value={cItems.get(product.gtin)?.quantity}
           onChange={handleOnChange}
         />
       ) : null}

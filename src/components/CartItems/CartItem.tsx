@@ -27,7 +27,7 @@ export function CartItem({ product }: CartItemProps) {
           </a>
         </div>
       </div>
-      <AddRemoveItemComponent gtin={product.gtin} direction="row" />
+      <AddRemoveItemComponent product={product} direction="row" />
       <span className="text-center w-1/5 font-semibold text-sm">
         {product.recommendedRetailPrice}
         {product.recommendedRetailPriceCurrency}
