@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { useSetRecoilState } from "recoil";
-import { DisplayedProducts } from "../../types";
 import PrevPage from "./resources/prev.svg";
 import NextPage from "./resources/next.svg";
+import { DisplayedPage } from "../../state";
 
 type PaginationProps = {
   totalPages: number;
@@ -14,7 +14,7 @@ export function PaginationComponent({
   totalPages,
   currentPage,
 }: PaginationProps) {
-  const setPageNum = useSetRecoilState(DisplayedProducts);
+  const setPageNum = useSetRecoilState(DisplayedPage);
   const pages = useMemo(
     () =>
       Array.from(

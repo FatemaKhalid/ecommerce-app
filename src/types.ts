@@ -29,40 +29,4 @@ export type ProductsResponse = {
  */
 export type ProductResponse = Product;
 
-/**
- * The Global State for user cart
- */
-
 export type CartItem = Product & { quantity: number };
-// Global state is the items users are willing to buy which is a map with
-// product gtin as key and pruduct data and quantity as value
-export const CartItems = atom({
-  key: "cartItemsState",
-  default: new Map<string, CartItem>(),
-});
-
-export const DisplayedProducts = atom({
-  key: "displayedProductsState",
-  default: 1,
-});
-
-export const ItemQuantitySelector = selectorFamily<CartItem, string>({
-  key: "itemQuantitySelector",
-  get:
-    (gtin: string) =>
-    ({ get }) => {
-      const cart = get(CartItems);
-      const item = cart?.get(gtin);
-      return item!;
-    },
-  set:
-    (gtin: string) =>
-    ({ set }, newValue) =>
-      set(CartItems, (prevState) => {
-        const newMap = new Map(prevState);
-        const item = <CartItem>newValue;
-        if (item.quantity === 0) newMap.delete(gtin);
-        else newMap.set(gtin, item);
-        return newMap;
-      }),
-});

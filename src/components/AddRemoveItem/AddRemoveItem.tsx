@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { CartItems, ItemQuantitySelector, Product } from "../../types";
+import { CartItems, ItemQuantitySelector } from "../../state";
+import { Product } from "../../types";
 import AddIcon from "./resources/add.svg";
 import RemoveIcon from "./resources/remove.svg";
 

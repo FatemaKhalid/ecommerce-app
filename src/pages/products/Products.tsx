@@ -2,12 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { PaginationComponent } from "../../components/Pagination/Pagination";
 import { ProductComponent } from "../../components/Product/Product";
-import { CartItems, DisplayedProducts, ProductsResponse } from "../../types";
+import { CartItems, DisplayedPage } from "../../state";
+import { ProductsResponse } from "../../types";
 import { fetchProducts } from "./services/service";
 
 export function ProductsPage() {
   const [productResponse, setProductResponse] = useState<ProductsResponse>();
-  const [pageNum, setPageNum] = useRecoilState(DisplayedProducts);
+  const [pageNum, setPageNum] = useRecoilState(DisplayedPage);
 
   const productsList = useMemo(
     () => productResponse?.results,
