@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { useSetRecoilState } from "recoil";
 import { DisplayedProducts } from "../../types";
+import PrevPage from "./resources/prev.svg";
+import NextPage from "./resources/next.svg";
 
 type PaginationProps = {
   totalPages: number;
@@ -14,7 +16,11 @@ export function PaginationComponent({
 }: PaginationProps) {
   const setPageNum = useSetRecoilState(DisplayedProducts);
   const pages = useMemo(
-    () => Array.from({ length: totalPages }, (_, i) => i + 1),
+    () =>
+      Array.from(
+        { length: Math.min(totalPages, MAX_PAGES_NUM) },
+        (_, i) => i + 1
+      ),
     [totalPages]
   );
   const currPageClassName =
@@ -32,7 +38,7 @@ export function PaginationComponent({
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto mb-2 px-4">
       <nav
         className="flex flex-row flex-nowrap justify-between md:justify-center items-center"
         aria-label="Pagination"
@@ -43,7 +49,7 @@ export function PaginationComponent({
           onClick={() => moveToPage(currentPage - 1)}
         >
           <span className="sr-only">Previous Page</span>
-          <PrevPage />
+          <PrevPage className="w-2" />
         </button>
         {pages.map((page) => (
           <button
@@ -60,33 +66,9 @@ export function PaginationComponent({
           onClick={() => moveToPage(currentPage + 1)}
         >
           <span className="sr-only">Next Page</span>
-          <NextPage />
+          <NextPage className="w-2" />
         </button>
       </nav>
     </div>
-  );
-}
-function PrevPage() {
-  return (
-    <svg
-      className="block w-4 h-4 fill-current"
-      viewBox="0 0 256 512"
-      aria-hidden="true"
-      role="presentation"
-    >
-      <path d="M238.475 475.535l7.071-7.07c4.686-4.686 4.686-12.284 0-16.971L50.053 256 245.546 60.506c4.686-4.686 4.686-12.284 0-16.971l-7.071-7.07c-4.686-4.686-12.284-4.686-16.97 0L10.454 247.515c-4.686 4.686-4.686 12.284 0 16.971l211.051 211.05c4.686 4.686 12.284 4.686 16.97-.001z"></path>
-    </svg>
-  );
-}
-function NextPage() {
-  return (
-    <svg
-      className="block w-4 h-4 fill-current"
-      viewBox="0 0 256 512"
-      aria-hidden="true"
-      role="presentation"
-    >
-      <path d="M17.525 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L205.947 256 10.454 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L34.495 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
-    </svg>
   );
 }

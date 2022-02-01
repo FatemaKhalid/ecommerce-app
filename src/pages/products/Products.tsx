@@ -22,8 +22,6 @@ export function ProductsPage() {
   useEffect(() => {
     fetchProducts(pageNum)
       .then((response) => {
-        // The response is a Response instance.
-        // You parse the data into a useable format using `.json()`
         return response.json();
       })
       .then((data: ProductsResponse) => {
