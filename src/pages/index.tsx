@@ -1,4 +1,3 @@
-import { useRecoilState } from "recoil";
 import Layout from "../components/Layout";
 import { ProductsPage } from "./products/Products";
 

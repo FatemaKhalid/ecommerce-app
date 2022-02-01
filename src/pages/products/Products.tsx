@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { PaginationComponent } from "../../components/Pagination/Pagination";
-import { ProductComponent } from "../../components/Product/Product";
-import { CartItems, DisplayedPage } from "../../state";
-import { ProductsResponse } from "../../types";
-import { fetchProducts } from "./services/service";
+import { PaginationComponent, ProductComponent } from "src/components";
+import { CartItems, DisplayedPage } from "src/state";
+import { ProductsResponse } from "src/types";
+import { fetchProducts } from "./services";
 
 export function ProductsPage() {
   const [productResponse, setProductResponse] = useState<ProductsResponse>();
@@ -26,7 +25,6 @@ export function ProductsPage() {
         return response.json();
       })
       .then((data: ProductsResponse) => {
-        // `data` is the parsed version of the JSON returned from the above endpoint.
         setProductResponse(data);
         setPageNum(data.page);
       });

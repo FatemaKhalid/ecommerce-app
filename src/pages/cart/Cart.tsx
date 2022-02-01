@@ -1,9 +1,6 @@
-import { CartItemsContainer } from "../../components/CartItems/CartItemsContainer";
-import { CartSummary } from "../../components/CartSummary/CartSummary";
+import { CartItemsContainer, CartSummary } from "src/components";
 
-type CartPageProps = {};
-
-export function CartPage({}: CartPageProps) {
+export function CartPage() {
   return (
     <div className="container mx-auto mt-10">
       <div className="flex shadow-md my-10">

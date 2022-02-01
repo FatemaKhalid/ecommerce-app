@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useSetRecoilState } from "recoil";
 import PrevPage from "./resources/prev.svg";
 import NextPage from "./resources/next.svg";
-import { DisplayedPage } from "../../state";
+import { DisplayedPage } from "src/state";
 
 type PaginationProps = {
   totalPages: number;
