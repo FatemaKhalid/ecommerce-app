@@ -14,6 +14,7 @@ export type Product = {
  * The response type of errors from /api/*.
  */
 export type ErrorResponse = string;
+export type ErrorResponse1 = string;
 
 /**
  * The response type of /api/products
